@@ -6,130 +6,174 @@ export class MyCard extends LitElement {
     return 'my-card';
   }
 
+  constructor() {
+    super();
+    this.title = "s t o n k s";
+    this.img = "https://www.dictionary.com/e/wp-content/uploads/2021/02/20210202_atw_stonks_800x800-300x300.png";
+    this.bodyText = "This is not a scam!!! This is a really cool opportunity for a human like you to open this and find out how to get rich quick!";
+    this.btnText = "CLICK HERE";
+    this.btnLink = "https://hackertyper.net/";
+  }
+
   static get styles() {
     return css`
-      
       :host {
-      display: inline-block;
-      width: 200px;
-      text-align: center;
-      margin: 15px;
-    }
-
-      .card {
-        font-size: 1em;
         display: inline-flex;
-        flex-direction: column;
-        border: 2px solid white;
-        padding: 8px;
-        margin: 8px;
-        filter: saturate(.9);
-        transition: 1.0s all ease-in-out;
-        overflow: hidden;
-        position: relative;
-        width: 100%;
       }
+
+      div {
+        width: 400px;
+        min-height: 600px;
+        background-color: var(--background-color);
+        color: var(--font-color);
+        box-sizing: border-box;
+        box-shadow: 16px 8px white;
+        padding: 16px;
+        margin: 32px 16px;
+        border-radius: 6px;
+        border: solid 2px black;
+        font-weight: bold;
+        position: relative;
+        transition: .5s all ease-in-out;
+      }
+
+      .change-color {
+        background-color: #ffffff;
+        color: #000;
+        filter: saturate(0);
+      }
+      /* .no-background {
+        background-image: none !important;
+      } */
 
       img {
         width: 100%;
-        height: 120px;
-        object-fit: scale-down;
+        height: 300px;
+        object-fit: cover;
+        border-radius: 3px;
+        border: solid 2px black;
+        box-sizing: border-box;
+        background-color: black;
+        filter: invert(90);
       }
-
-      
-      .card-text {
-        padding: 0 8px 8px 8px;
-        color: black;
-        background-color: #ffa8f5;
-        margin: 0 0 0 8px;
-        height: 100px;
-        flex-grow: 1;
-        overflow: auto;
-      }
-
-      .card-title {
-        position: sticky;
-        top: 0;
-        background-color: #eeeeee;
-        text-align: center;
-        font-size: 1.5em;
-        padding: 8px 8px 16px;
-        margin: 0 -8px;
-      }
-
-      .details-btn {
-        background-color: #72f7a3;
-        color: white;
-        padding: .5em;
-        margin: .5em;
-      }
-
-      .card:hover,
-      .card:focus-within {
-        outline: 2px solid white;
+      div:hover {
+        filter: saturate(0);
+        outline: 4px solid white;
         outline-offset: 16px;
-        filter: saturate(30);
       }
 
-      .card:hover .card-title,
-      .card:hover .card-text,
-      .card:hover p,
-      .card:hover .details-btn {
-        background-color: navy;
-        color: yellow;
+      h1 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin: 0;
+        margin-bottom: 6px;
+        font-family: "Times New Roman", Times, serif;
+      
+      }
+
+      h3 {
+        margin: 36px 0;
+        font-weight: 400;
+        text-align: center;
+        font-family: "Times New Roman", Times, serif;
+      }
+
+      button {
+        background: #ffffff;
+        border-radius: 100px;
+        padding: 6px 12px;
+        font-weight: bold;
+        border: solid 2px black;
+        box-sizing: border-box;
+        box-shadow: 4px 4px black;
+        transition: all .3s;
+        color: #000;
+        position: absolute;
+        
+
+        bottom: 12px;
+      }
+      button:hover {
+        cursor: pointer;
+        background: #000;
+        color: #fff;
+        transition: all .5s;
       }
     `;
   }
-
 
   render() {
     return html`
-      <div class="card">
-        <div class="card-title">${this.title}</div>
-        <img class="card-image" src="${this.imageSrc}" alt="${this.title}">
-        <div class="card-text">
-          <p>${this.description}</p>
-          <button class="details-btn" @click="${this.navigateToLink}">Details</button>
-        </div>
-      </div>
-    `;
-  }
-  navigateToLink() {
-    if (this.link) {
-      window.location.href = this.link;
-    }
+    <div>
+      <!-- <h2>${this.noBackground ? 'no-background' : ''}</h2> -->
+      <h1>${this.title}</h1>
+      <img src=${this.img}>
+      <h3>${this.bodyText}</h3>
+      <a href=${this.btnLink} target="_blank"><button>${this.btnText}</button></a>
+    </div>`;
   }
 
   static get properties() {
     return {
       title: { type: String },
-      link: { type: String },
-      imageSrc: { type: String },
-      description: { type: String},
-      color: { type: String },
+      img: { type: String },
+      bodyText: { type: String },
+      btnText: { type: String },
+      btnLink: { type: String },
     };
-  }
-  
-  duplicateCard() {
-    const newCard = document.createElement(MyCard.tag);
-    newCard.title = this.title;
-    newCard.link = this.link;
-    newCard.imageSrc = this.imageSrc;
-    newCard.description = this.description;
-    newCard.color = this.color;
-
-  
-    if (this.parentNode) {
-      this.parentNode.appendChild(newCard);
-    } else {
-      document.body.appendChild(newCard);
-    }
-  }
-
-  deleteCard() {
-    this.remove();
   }
 }
 
+globalThis.customElements.define(MyCard.tag, MyCard);
 
-customElements.define(MyCard.tag, MyCard);
+document.querySelector('#duplicate').addEventListener('click', function(event) {
+  const cardList = document.querySelector('.cardContainer');
+  const myCardElements = cardList.querySelectorAll('my-card');
+
+  if (myCardElements.length < 10) {
+    const lastCard = myCardElements[myCardElements.length - 1];
+    const newCard = document.createElement('my-card');
+    
+    newCard.title = lastCard.title;
+    newCard.img = lastCard.img;
+    newCard.bodyText = lastCard.bodyText;
+    newCard.btnText = lastCard.btnText;
+    newCard.btnLink = lastCard.btnLink;
+
+    cardList.appendChild(newCard);
+  }
+});
+
+document.querySelector('#changetitle').addEventListener('click', function(e) {
+  const firstCard = document.querySelector('.cardContainer my-card');
+  if (firstCard) {
+    firstCard.title = "hotel";
+  }
+});
+
+document.querySelector('#changeimage').addEventListener('click', function(e) {
+  const firstCard = document.querySelector('.cardContainer my-card');
+  if (firstCard) {
+    firstCard.img = "https://hips.hearstapps.com/hmg-prod/images/view-down-hotel-corridor-with-illuminated-lamps-on-royalty-free-image-1704470736.jpg?crop=0.66682xw:1xh;center,top&resize=640:*";
+  }
+});
+
+document.querySelector('#changebg').addEventListener('click', function(e) {
+  var cards = document.querySelectorAll('.cardContainer my-card');
+  cards.forEach(function(card) {
+    card.shadowRoot.querySelector('div').classList.toggle('change-color');
+    // card.shadowRoot.querySelector('div').classList.toggle('no-background');
+  });
+});
+
+
+document.querySelector('#delete').addEventListener('click', function(e) {
+  const cardList = document.querySelector('.cardContainer');
+  const myCardElements = cardList.querySelectorAll('my-card');
+  if (myCardElements.length > 1) {
+    const lastCard = myCardElements[myCardElements.length - 1];
+    lastCard.remove();
+  }
+});
