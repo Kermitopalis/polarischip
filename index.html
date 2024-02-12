@@ -8,6 +8,17 @@
   <base href="/">
 
   <style>
+    my-card[fancy],
+    my-card[fancy]:nth-child(3n),
+    my-card[fancy]:nth-child(3n + 2) {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    background-color: rgb(255, 255, 255);
+    border: 2px solid rgb(255, 255, 255);
+    box-shadow: none;
+    --background-color: #ffffff;
+
+
+  }
     :root,
     html,
     body 
@@ -26,7 +37,7 @@
       margin: 16px;
     }
     my-card:nth-child(3n) {
-      --background-color: #ff63ef;
+      --background-color: #e64ed7;
       --font-color: rgb(36, 36, 36);
     }
     my-card:nth-child(3n + 2) {
@@ -36,7 +47,6 @@
     body:hover {
       background-color: #000;
       filter: invert(0);
-
       }
 
     .cardBtn {
@@ -80,12 +90,14 @@
   <button class="cardBtn" id="changeimage">change image</button>
   <button class="cardBtn" id="changebg">color</button>
   <button class="cardBtn" id="delete">delete</button>
+  <button class="cardBtn" id="fancybtn">fancy</button>
   
   <div class="cardContainer">
     <my-card></my-card>
     <my-card title="mall" img="https://miro.medium.com/v2/resize:fit:540/1*5ciBc4U7yf9-p3v5Zxt2OA.jpeg" bodyText="This is a real creepy card oh my goodness! Wow I could just keep on talking about how freakin creepy this card is. It is like shockingly creepy. like woah, that's a creepy card. I wouldn't so much as call it terrifying, but dang it sure is creepy. Maybe even a lil spooky. " btnText="details"></my-card>
     <my-card title="g o o s e b u m p s" img="https://bloody-disgusting.com/wp-content/uploads/2017/08/goosebumps-covers.jpg"bodyText="Do you remember these books? I used to read them all the time and loved the adapted telvised series! This is a pretty spooky card oh my!" btnText="Read More" btnLink="https://kids.scholastic.com/kid/books/goosebumps/"></my-card>
     <my-card title="Macintosh Plus" img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1Sk64YjpoUUuCKabcrECaQIrXYK467NHhTchhWZuiprcH2Fnc4WkXtWT0sAiGTjUp6Ic&usqp=CAU" bodyText=" An old computer that smells like dust and an internet connection " btnLink="https://en.wikipedia.org/wiki/Macintosh_Plus"></my-card>
+    <my-card fancy></my-card>
     <my-card title="Toyota MR2" img="https://images.squarespace-cdn.com/content/v1/5caed8960cf57d49530e8c60/7c891120-2943-46f4-a4e0-39aa05b1fabc/art-mg-toyotaw10mr2+09.jpg" bodyText="Wow look at that S E X Y car oh my goodness!" btnLink="https://supercarnostalgia.com/blog/toyota-mr2-w10"></my-card>
     <my-card title="lost" img="https://images.squarespace-cdn.com/content/v1/57825361440243db4a4b7830/1619928859461-6WZI3XAM24X6CIUA1L3G/dqhsblbdgob51.png?format=2500w" bodyText="I don't know where this is. kinda creepy. I think someone is following you."></my-card>
   </div>

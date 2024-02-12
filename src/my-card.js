@@ -110,7 +110,10 @@ export class MyCard extends LitElement {
       <!-- <h2>${this.noBackground ? 'no-background' : ''}</h2> -->
       <h1>${this.title}</h1>
       <img src=${this.img}>
-      <h3>${this.bodyText}</h3>
+      <details>
+        <summary>description</summary>
+        <slot>${this.bodyText}</slot>
+      </details>
       <a href=${this.btnLink} target="_blank"><button>${this.btnText}</button></a>
     </div>`;
   }
