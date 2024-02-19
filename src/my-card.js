@@ -1,4 +1,5 @@
 import { LitElement, html, css } from 'lit';
+import "@lrnwebcomponents/meme-maker/meme-maker.js";
 
 export class MyCard extends LitElement {
 
@@ -13,6 +14,7 @@ export class MyCard extends LitElement {
     this.bodyText = "This is not a scam!!! This is a really cool opportunity for a human like you to open this and find out how to get rich quick!";
     this.btnText = "CLICK HERE";
     this.btnLink = "https://hackertyper.net/";
+    this.fancy = false;
   }
 
   static get styles() {
@@ -20,49 +22,58 @@ export class MyCard extends LitElement {
       :host {
         display: inline-flex;
       }
-
-      div {
+      
+      :host([fancy]) .card{
+        
         width: 400px;
         min-height: 600px;
-        background-color: var(--background-color);
+        background-color: pink;
         color: var(--font-color);
         box-sizing: border-box;
-        box-shadow: 16px 8px white;
+        box-shadow: 16px 8px black;
+        font-weight: bold;
+        transition: .5s all ease-in-out;
+      }
+
+      .card {
+        background-color: white;
+        border: 2px solid black;
+        box-shadow: 10px 5px 5px grey;
+        box-sizing: border-box;
+        position: relative;
         padding: 16px;
         margin: 32px 16px;
         border-radius: 6px;
         border: solid 2px black;
-        font-weight: bold;
-        position: relative;
-        transition: .5s all ease-in-out;
+        width: 400px;
+        min-height: 600px;
       }
 
       .change-color {
-        background-color: #ffffff;
+        background-color: #14a9ee;
         color: #000;
-        filter: saturate(0);
       }
       /* .no-background {
         background-image: none !important;
       } */
 
-      img {
+      .card .card-image {
         width: 100%;
+        min-height: 300px;
+        max-height: 200px;
         height: 300px;
         object-fit: cover;
         border-radius: 3px;
         border: solid 2px black;
         box-sizing: border-box;
         background-color: black;
-        filter: invert(90);
       }
-      div:hover {
-        filter: saturate(0);
+      .card:hover {
         outline: 4px solid white;
         outline-offset: 16px;
       }
 
-      h1 {
+      .title {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -78,12 +89,13 @@ export class MyCard extends LitElement {
         font-weight: 400;
         text-align: center;
         font-family: "Times New Roman", Times, serif;
+        
       }
 
       button {
         background: #ffffff;
         border-radius: 100px;
-        padding: 6px 12px;
+        /* padding: 6px 12px; */
         font-weight: bold;
         border: solid 2px black;
         box-sizing: border-box;
@@ -101,18 +113,50 @@ export class MyCard extends LitElement {
         color: #fff;
         transition: all .5s;
       }
+      details summary {
+        text-align: center;
+        font-size: 20px;
+        padding: 8px 0;
+      }
+      details[open] summary {
+        font-weight: bold;
+      }
+      details div {
+        border: 2px solid black;
+        text-align: center;
+        padding: 10px;
+        height: 130px;
+        overflow: auto;
+      }
     `;
+  }
+  openChanged(e) {
+    console.log(e.newState);
+    if (e.newState === "open") {
+      this.fancy = true;
+    }
+    else {
+      this.fancy = false;
+    }
   }
 
   render() {
     return html`
-    <div>
+    <div class="card">
       <!-- <h2>${this.noBackground ? 'no-background' : ''}</h2> -->
-      <h1>${this.title}</h1>
-      <img src=${this.img}>
-      <details>
+      <h1 class='title'>${this.title}</h1>
+       <!-- <meme-maker 
+        alt="something i do not remember"
+        image-url="${this.img}"
+        bottom-text="${this.h1}"
+        class="img1">
+      </meme-maker> -->
+      <img class="card-image" src="${this.img}" alt="Card Image">
+      <details ?open="${this.fancy}" @toggle="${this.openChanged}">
         <summary>description</summary>
-        <slot>${this.bodyText}</slot>
+        <div>
+          <slot>${this.bodyText}</slot>
+        </div>
       </details>
       <a href=${this.btnLink} target="_blank"><button>${this.btnText}</button></a>
     </div>`;
@@ -125,6 +169,7 @@ export class MyCard extends LitElement {
       bodyText: { type: String },
       btnText: { type: String },
       btnLink: { type: String },
+      fancy: { type: Boolean, reflect: true},
     };
   }
 }
@@ -166,7 +211,7 @@ document.querySelector('#changeimage').addEventListener('click', function(e) {
 document.querySelector('#changebg').addEventListener('click', function(e) {
   var cards = document.querySelectorAll('.cardContainer my-card');
   cards.forEach(function(card) {
-    card.shadowRoot.querySelector('div').classList.toggle('change-color');
+    card.shadowRoot.querySelector('.card').classList.toggle('change-color');
     // card.shadowRoot.querySelector('div').classList.toggle('no-background');
   });
 });
