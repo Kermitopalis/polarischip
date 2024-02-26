@@ -18,18 +18,9 @@ export class CounterApp extends LitElement {
     :host {
       display: block;
     }
-    :host([counter="18"]) .header {
-      color: red;
-    }
-    :host([counter="21"]) .header {
-      color: green;
-    }
-    :host([counter="25"]) .header {
-      color: crimson;
-    }
-    :host([counter="10"]) .header {
-      color: crimson;
-    }
+
+    
+    
   
   .header {
     font-size: 64px;
@@ -112,14 +103,22 @@ export class CounterApp extends LitElement {
     );
   }
   render() {
+    var color = "white";
+    if(this.counter == this.min) color = "crimson";
+    if(this.counter == this.max) color = "crimson";
+    if(this.counter === 21) color = "green";
+    if(this.counter === 18) color = "blue";
+
+
+
+
+
     return html`
-      <style>
-      </style>
       <confetti-container id="confetti">
       <div class="card">
       <div class="wrapper">
         <div class="header">
-          <header>${this.counter}</header>
+          <header style="color: ${color}">${this.counter}</header>
         </div>
       <div class="buttons">
         <button @click="${this.subtract}" ?disabled="${this.min === this.counter}" class="subtract">-</button>

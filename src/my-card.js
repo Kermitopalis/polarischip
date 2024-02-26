@@ -1,5 +1,4 @@
 import { LitElement, html, css } from 'lit';
-import "@lrnwebcomponents/meme-maker/meme-maker.js";
 
 export class MyCard extends LitElement {
 
