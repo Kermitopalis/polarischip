@@ -25,21 +25,27 @@ export class CounterApp extends LitElement {
   .header {
     font-size: 64px;
     color: white;
-    padding: 8px;
+    padding: 24px;
     margin: 16px;
     text-align: center;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-family: "Press Start 2P", sans-serif;
+    background-color: black;
   }
   .buttons {
     display: flex;
     margin: 16px;
     justify-content: center;
-
+    
+  }
+  .wrapper {
+    background-color: #fcf0d6;
+    padding: 24px;
+    margin: 24px;
   }
   .add,
   .subtract {
     background-color: black;
-    border-radius: 100px;
+    /* border-radius: 100px; */
     color: white;
     text-align: center;
     font-size: 50px;
@@ -48,6 +54,8 @@ export class CounterApp extends LitElement {
     margin: 16px 16px 16px 16px;
     box-sizing: content-box;
     width: 500px;
+    box-shadow: 0px 15px 0px #000000, -4px 28px 2px #00000069;
+
   }
   .add:hover,
   .subtract:hover {
@@ -55,11 +63,13 @@ export class CounterApp extends LitElement {
     color: black;
   }
   .card {
-    background-color: black;
+    background-color: #fcf0d6;
     border-color: grey;
-    border-radius: 75px;
-    margin: 40px;
-    filter: opacity(75%);
+    /* border-radius: 75px; */
+    max-width: 45vw;
+    /* filter: opacity(90%); */
+    box-shadow: 0px 15px 0px #a59d8d, -4px 28px 2px #00000069;
+
   }
   .card:hover {
     outline: 4px solid white;
@@ -67,6 +77,11 @@ export class CounterApp extends LitElement {
     transition: .6s all ease-in-outl
 
     }
+  .counter-app {
+    justify-content: center;
+    text-align: center;
+    display: grid;
+  }
 
   .confetti {
     justify-content: center;
@@ -114,6 +129,7 @@ export class CounterApp extends LitElement {
 
 
     return html`
+      <div class="counter-app">
       <confetti-container id="confetti">
       <div class="card">
       <div class="wrapper">
@@ -127,7 +143,7 @@ export class CounterApp extends LitElement {
     </div>
   </div>
   </confetti-container id="confetti">
-
+  </div class='counter-app'>
     `;
   }
 
