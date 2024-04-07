@@ -10,18 +10,12 @@ export class haxcmsParty extends DDD {
     return 'party-ui';
   }
 
-  constructor() {
+  constructor() { //constructor of the code, which calls super and initializes the user array.
     super();
     this.users = [];
   }
-  connectedCallback() {
-    super.connectedCallback();
-    if (!this.users) {
-      this.users = []; 
-    }
-  }
 
-  static get styles() {
+  static get styles() { //gets the css styles which personalizes the page
     return css`
         :host {
             display: block;
@@ -198,8 +192,8 @@ export class haxcmsParty extends DDD {
          transition: border-color 0.3s ease;  
          margin: 10px 0px 20px 0px;
          box-shadow: #7f7b72 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset, 0px 20px 0px #c1baac, -10px 34px 4px #00000069;
-        }
       }
+    
       .details {
         color: #D53636;
         font-size: 12px;
@@ -246,38 +240,34 @@ export class haxcmsParty extends DDD {
     `;
   }
 
-  toggleAlert() {
-    const modal = this.shadowRoot.querySelector('.party-ui-modal');
-    this.isOpen = !this.isOpen;
-    if (this.isOpen) {
+  toggleAlert() { //the toggle alert function
+    const modal = this.shadowRoot.querySelector('.party-ui-modal'); //selects the modal
+    this.isOpen = !this.isOpen; //toggling whether it is visible or not
+    if (this.isOpen) { //if open, it removes it to close it
       localStorage.removeItem('modalIsOpen', 'true');
       modal.style.display = 'none';
-    } else {
+    } else { //does the opposite
       localStorage.setItem('modalIsOpen', 'false');
+      modal.style.display = 'block';
     }
+    requestUpdate(); //forces a request update in instance it doesn't do it automatically
   }
 
-  handleKeyPress(event) {
+  handleKeyPress(event) {  
     if (event.key === 'Enter') {
-      this.addUser();
+      this.addUser(); //calls adduser function when enter key is pressed
     }
   }
 
   addUser() {
-    const inputElement = this.shadowRoot.querySelector('.input');
-    if (!inputElement) {
-      console.warn('There is no input');
+    const inputElement = this.shadowRoot.querySelector('.input'); //gets the input 
+    if (!inputElement) { 
+      console.warn('There is no input'); //instance that there is no user input but called
       return;
     }
 
-    const userInput = inputElement.value;
-    if (!userInput) {
-      console.warn('Input is empty.');
-      return;
-    }
-
-    const checkUsername = /^[a-z0-9]{2,20}$/;
-    if (!checkUsername.test(userInput)) {
+    const checkUsername = /^[a-z0-9]{2,20}$/; //parameters of what the username can contain
+    if (!checkUsername.test(userInput)) { //if not correct, will send message letting the user know
       console.warn('Requirements not met.');
       alert(`Requirements not met.`)
       return;
@@ -285,58 +275,57 @@ export class haxcmsParty extends DDD {
 
     if (this.users.includes(userInput)) {
       alert('User already exists in the party.')
-      return;
+      return; //instance that the user is already in the party
     }
 
-    this.users.push(userInput);
-    inputElement.value = '';
-    this.requestUpdate();
+    this.users.push(userInput);  //adds the user to array
+    inputElement.value = ''; //clears user input once user added
+    this.requestUpdate(); //forcibly renders the updated users
 
-    console.log('User added:', userInput);
+    console.log('User added:', userInput); //logs user added
 
     const partyUiUsersScroll = this.shadowRoot.querySelector('.party-ui-users-scroll');
     if (!partyUiUsersScroll) {
-      console.warn('Scroll container not found.');
+      console.warn('Scroll container not found.'); //this checks whether the scroll is working correctly, without this, will not run.
       return;
     }
 
     partyUiUsersScroll.innerHTML = '';
 
-    this.users.map(user => {
-      const newUserContainer = document.createElement('div');
-      newUserContainer.classList.add('partyui-user-container');
-      newUserContainer.innerHTML = `
+    this.users.map(user => { //iterates over users in user array
+      const newUserContainer = document.createElement('div'); //creates a div for each user
+      newUserContainer.classList.add('partyui-user-container'); //adds partyui-user-container to the new user container
+      newUserContainer.innerHTML = ` 
             <rpg-character seed="${user}"></rpg-character>
             <div id='username'>${user}</div>
             <div>
               <button class="removeBTN">delete - </button>
             </div>
-        `;
-      partyUiUsersScroll.appendChild(newUserContainer);
+        `; //this sets the inner html of the container, including the character, the username, and a delete button
+      partyUiUsersScroll.appendChild(newUserContainer); //adds it the the scroll container
 
-      console.log('New user container created for:', user);
+      console.log('New user container created for:', user); //logs the user creation
 
-      const deleteButton = newUserContainer.querySelector('.removeBTN');
-      deleteButton.addEventListener('click', this.deleteUser.bind(this));
+      const deleteButton = newUserContainer.querySelector('.removeBTN'); 
+      deleteButton.addEventListener('click', this.deleteUser.bind(this)); //binds the delete button to the deleteuser method
     });
   }
 
-  deleteUser(event) {
-    const username = event.target.parentNode.previousElementSibling.innerText;
+  deleteUser(event) { //delete user function
+    const username = event.target.parentNode.previousElementSibling.innerText; //gets the username which is seleted
 
-    const index = this.users.indexOf(username);
-    if (index !== -1) {
+    const index = this.users.indexOf(username); //finds index of targeted user
+    if (index !== -1) { //if the user is found in the array, it removes it using the splice method.
       this.users.splice(index, 1);
     }
 
-    event.target.parentNode.parentNode.remove();
-    // this.shadowRoot.querySelector('#sound2').play();
+    event.target.parentNode.parentNode.remove(); //removes the entire parent element of deleted user
 
-    console.log('User deleted:', username);
-    console.log('Updated users array:', this.users);
+    console.log('User deleted:', username); //updates the log with the deleted users
+    console.log('Updated users array:', this.users); //shows the current array
   }
 
-  invalidAlert() {
+  invalidAlert() { //an invalid alert function which gives a pop-up letting the user know that requirements aren't met
     return html`
             <div class="modalView" id="modalView">
             <div id="modalView__closeBtn"></div>
@@ -347,18 +336,20 @@ export class haxcmsParty extends DDD {
         `
   }
 
-  saveParty() {
-    const namesString = this.users.join(', ');
-    console.log('Party saved. Users:', this.users);
-    alert(`Party saved. Users: ${namesString}`);
-    this.makeItRain();
+  saveParty() { //function save party
+    const namesString = this.users.join(', '); //creates a string with users seperated by commas
+    console.log('Party saved. Users:', this.users); //logs the users in the party
+    alert(`Party saved. Users: ${namesString}`); //gets an alert in the page which also shows the saved members
+    this.makeItRain(); //makes the confetti go off
   }
 
-  render() {
+  
+
+  render() { //this is the hmtl that is rendered for HaxCmsParty
     return html`
     <div class="party-start">
-    <button class="randomBTN">START A PARTY</button>
-  </div>
+    <button role="button" class="randomBTN" @click="${this.toggleAlert}">START A PARTY</button>
+    </div>
     <div class="party-ui">
       <confetti-container id="confetti">
       <div class="party-ui-modal">
@@ -396,11 +387,11 @@ export class haxcmsParty extends DDD {
   }
 
   static get properties() {
-    return {
+    return { //gets the properties for the listed variable(s), in this case the user array.
       users: { type: Array }
     };
   }
-  makeItRain() {
+  makeItRain() { //imported code for the make it rain module
     import("@lrnwebcomponents/multiple-choice/lib/confetti-container.js").then(
       (module) => {
         setTimeout(() => {
@@ -410,5 +401,6 @@ export class haxcmsParty extends DDD {
     );
   }
 }
+
 
 globalThis.customElements.define(haxcmsParty.tag, haxcmsParty);
